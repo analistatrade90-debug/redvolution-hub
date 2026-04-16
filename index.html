@@ -36,6 +36,8 @@
         .status-msg .icon { font-size: 36px; display: block; margin-bottom: 14px; }
         .btn-reset { padding: 12px 20px; background: var(--brand-dark); color: white; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; font-family: inherit; }
         .btn-reset:hover { background: var(--brand-red); }
+        .retry-btn { margin-top: 16px; padding: 12px 28px; background: var(--brand-red); color: white; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; font-size: 14px; font-family: inherit; }
+        .retry-btn:hover { opacity: 0.85; }
     </style>
 </head>
 <body>
@@ -72,10 +74,17 @@
 </div>
 
 <script>
-    // ─── Fuente de datos: CSV publicado de Google Sheets via proxy CORS ───
-    const DATA_LINK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSob8PxuWD3lMNy28ysZRRrSKH8a05gbSg8oekta-2BAyTi5wFblU3Q-NhH9TYD2n19flNss7sU--U9/pub?output=csv";
-    const PROXY     = "https://api.allorigins.win/raw?url=";
-    // ─────────────────────────────────────────────────────────────────────
+    // ─── Fuente de datos ──────────────────────────────────────────────────────
+    const DATA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSob8PxuWD3lMNy28ysZRRrSKH8a05gbSg8oekta-2BAyTi5wFblU3Q-NhH9TYD2n19flNss7sU--U9/pub?output=csv";
+
+    // Lista de proxies en orden de prioridad — si uno falla, intenta el siguiente
+    const PROXIES = [
+        url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+        url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+        url => `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`
+    ];
+    // ─────────────────────────────────────────────────────────────────────────
 
     let DB = [], filteredDB = [];
 
@@ -89,11 +98,31 @@
         return `https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=E30613&color=fff&size=200`;
     }
 
-    async function boot() {
-        try {
-            const res = await fetch(PROXY + encodeURIComponent(DATA_LINK));
-            const csv = await res.text();
+    // Intenta cada proxy en secuencia hasta que uno responde con CSV válido
+    async function fetchWithFallback() {
+        let lastError = null;
+        for (let i = 0; i < PROXIES.length; i++) {
+            try {
+                const proxyUrl = PROXIES[i](DATA_URL);
+                const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const text = await res.text();
+                // Validar que la respuesta sea CSV real (no HTML de error)
+                if (text.trim().startsWith("<")) throw new Error("Respuesta no es CSV");
+                console.log(`✅ Proxy ${i + 1} funcionó`);
+                return text;
+            } catch (e) {
+                console.warn(`⚠️ Proxy ${i + 1} falló: ${e.message}`);
+                lastError = e;
+            }
+        }
+        throw new Error("Todos los proxies fallaron. Intenta de nuevo en unos minutos.");
+    }
 
+    async function boot() {
+        setStatus("⏳", "Sincronizando con Redvolution Hub...");
+        try {
+            const csv = await fetchWithFallback();
             Papa.parse(csv, {
                 header: false,
                 skipEmptyLines: true,
@@ -123,6 +152,11 @@
                         doc4:     r[37] || ""
                     })).filter(d => d.nombre.trim() !== "");
 
+                    if (!DB.length) {
+                        setStatus("🔍", "La hoja no tiene datos o no está publicada correctamente.");
+                        return;
+                    }
+
                     filteredDB = [...DB];
                     populateFilters();
                     renderGrid(filteredDB);
@@ -132,10 +166,16 @@
             document.getElementById("main-grid").innerHTML = `
                 <div class="status-msg">
                     <span class="icon">⚠️</span>
-                    <strong style="color:#E30613;">Error al cargar datos: ${e.message}</strong><br><br>
-                    <small>Verifica que la hoja esté publicada en <b>Archivo → Compartir → Publicar en la web → CSV</b>.</small>
+                    <strong style="color:#E30613;">${e.message}</strong><br><br>
+                    <small>La hoja debe estar publicada en <b>Archivo → Compartir → Publicar en la web → CSV</b>.</small><br>
+                    <button class="retry-btn" onclick="boot()">🔄 Reintentar</button>
                 </div>`;
         }
+    }
+
+    function setStatus(icon, msg) {
+        document.getElementById("main-grid").innerHTML =
+            `<div class="status-msg"><span class="icon">${icon}</span>${msg}</div>`;
     }
 
     function populateFilters() {
