@@ -264,11 +264,12 @@
     </div>
 
     <script>
-        const DATA_LINK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSob8PxuWD3lMNy28ysZRRrSKH8a05gbSg8oekta-2BAyTi5wFblU3Q-NhH9TYD2n19flNss7sU--U9/pub?output=csv";
+        // CACHE BUSTER: Agregamos timestamp para forzar carga de datos nuevos
+        const DATA_LINK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSob8PxuWD3lMNy28ysZRRrSKH8a05gbSg8oekta-2BAyTi5wFblU3Q-NhH9TYD2n19flNss7sU--U9/pub?output=csv&t=" + new Date().getTime();
         const PROXY = "https://api.allorigins.win/raw?url=";
 
         let DB = [];
-        let filteredDB = []; // Variable global para manejar los datos actuales
+        let filteredDB = [];
 
         function getThumb(url) {
             if (!url) return "";
@@ -282,34 +283,16 @@
                 const csv = await r.text();
                 Papa.parse(csv, {
                     header: false,
-                    skipEmptyLines: true,
+                    skipEmptyLines: 'greedy', // Mejora la limpieza de filas vacías
                     complete: function(res) {
                         DB = res.data.slice(1).map(r => ({
-                            redv: r[2],
-                            foto: r[3],
-                            nombre: r[4],
-                            dni: r[5],
-                            email: r[6],
-                            tel: r[7],
-                            city: r[14],
-                            dist: r[13],
-                            polo: r[15],
-                            pant: r[16],
-                            zap: r[17],
-                            bio: r[18],
-                            grad: r[19],
-                            carr: r[20],
-                            exp_anos: r[22],
-                            ingles: r[21],
-                            centro: r[23],
-                            logros: r[24],
-                            doc1: r[34],
-                            doc2: r[35],
-                            doc3: r[36],
-                            doc4: r[37]
-                        })).filter(d => d.nombre);
+                            redv: r[2], foto: r[3], nombre: r[4], dni: r[5], email: r[6], tel: r[7],
+                            city: r[14], dist: r[13], polo: r[15], pant: r[16], zap: r[17],
+                            bio: r[18], grad: r[19], carr: r[20], exp_anos: r[22], ingles: r[21],
+                            centro: r[23], logros: r[24], doc1: r[34], doc2: r[35], doc3: r[36], doc4: r[37]
+                        })).filter(d => d.nombre && d.nombre.trim() !== "");
 
-                        filteredDB = [...DB]; // Inicializamos los datos filtrados con la base completa
+                        filteredDB = [...DB];
                         populateFilters();
                         renderGrid(filteredDB);
                     }
@@ -320,7 +303,7 @@
         }
 
         function populateFilters() {
-            const unique = (k) => [...new Set(DB.map(d => d[k]))].sort();
+            const unique = (k) => [...new Set(DB.map(d => d[k]))].filter(Boolean).sort();
             const fill = (id, list) => {
                 const el = document.getElementById(id);
                 list.forEach(v => {
@@ -366,8 +349,7 @@
         }
 
         function showDossier(i) {
-            const d = filteredDB[i]; // Buscamos directamente en el array filtrado por su posición
-
+            const d = filteredDB[i];
             if (!d) return;
 
             document.getElementById("m-side").innerHTML = `
