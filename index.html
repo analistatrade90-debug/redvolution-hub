@@ -1,239 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Redvolution Talent Hub — Pipeline Pro 2026</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-         :root {
-            --brand-red: #E30613;
-            --brand-dark: #0F172A;
-            --text-main: #1A1A1A;
-            --glass-bg: rgba(255, 255, 255, 0.98);
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #F8FAFC;
-            background-image: radial-gradient(var(--brand-red) 0.5px, transparent 0.5px);
-            background-size: 30px 30px;
-            background-attachment: fixed;
-        }
-        
-        header {
-            background: linear-gradient(135deg, rgba(227, 6, 19, 0.8), rgba(0, 0, 0, 0.9)), url('BannerRedvolution.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 180px;
-            padding: 0 60px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            color: white;
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
-        }
-        
-        .brand-content {
-            text-align: right;
-        }
-        
-        .brand-content h1 {
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-        }
-        
-        .filter-console {
-            margin: 0 60px;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            align-items: flex-end;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
-        }
-        
-        .f-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .f-group label {
-            font-size: 10px;
-            font-weight: 800;
-            color: #64748B;
-            text-transform: uppercase;
-        }
-        
-        .f-group select,
-        .f-group input {
-            padding: 12px;
-            border-radius: 12px;
-            border: 2.5px solid #F1F5F9;
-            font-size: 13px;
-            outline: none;
-            width: 100%;
-        }
-        
-        .btn-reset {
-            padding: 12px;
-            background: var(--brand-dark);
-            color: white;
-            border-radius: 12px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        
-        .talent-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 30px;
-            padding: 50px 60px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 35px;
-            padding: 35px;
-            border: 1px solid #F1F5F9;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
-            border-color: var(--brand-red);
-        }
-        
-        .photo-xl {
-            width: 90px;
-            height: 90px;
-            border-radius: 28px;
-            overflow: hidden;
-            border: 4px solid #F8FAFC;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        }
-        
-        .photo-xl img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.9);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(12px);
-        }
-        
-        .modal-dossier {
-            background: white;
-            width: 90%;
-            max-width: 950px;
-            border-radius: 40px;
-            display: flex;
-            overflow: hidden;
-            height: auto;
-            max-height: 85vh;
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
-        }
-        
-        .side-red {
-            background: var(--brand-red);
-            width: 35%;
-            padding: 45px 35px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .modal-photo {
-            width: 160px;
-            height: 160px;
-            border-radius: 45px;
-            border: 6px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 25px;
-            overflow: hidden;
-            background: white;
-        }
-        
-        .modal-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        
-        .main-info {
-            width: 65%;
-            padding: 50px;
-            overflow-y: auto;
-            background: #fff;
-        }
-        
-        .resumen-profesional {
-            background: #FFF5F5;
-            padding: 25px;
-            border-radius: 20px;
-            border-left: 6px solid var(--brand-red);
-            margin-bottom: 30px;
-        }
-        
-        .resumen-profesional h4 {
-            font-size: 13px;
-            color: var(--brand-red);
-            text-transform: uppercase;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-        
-        .info-tag {
-            background: #F8FAFC;
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid #E2E8F0;
-            margin-bottom: 12px;
-        }
-        
-        .info-tag label {
-            font-size: 10px;
-            color: var(--brand-red);
-            font-weight: 800;
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 6px;
-        }
+         :root { --brand-red: #E30613; --brand-dark: #0F172A; --text-main: #1A1A1A; --glass-bg: rgba(255, 255, 255, 0.98); }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; background-image: radial-gradient(var(--brand-red) 0.5px, transparent 0.5px); background-size: 30px 30px; background-attachment: fixed; }
+        header { background: linear-gradient(135deg, rgba(227, 6, 19, 0.8), rgba(0, 0, 0, 0.9)), url('BannerRedvolution.jpg'); background-size: cover; background-position: center; height: 180px; padding: 0 60px; display: flex; justify-content: flex-end; align-items: center; position: sticky; top: 0; z-index: 1000; color: white; box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3); }
+        .brand-content { text-align: right; }
+        .brand-content h1 { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; }
+        .filter-console { margin: 0 60px; background: white; padding: 30px; border-radius: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; align-items: flex-end; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06); }
+        .f-group { display: flex; flex-direction: column; gap: 8px; }
+        .f-group label { font-size: 10px; font-weight: 800; color: #64748B; text-transform: uppercase; }
+        .f-group select, .f-group input { padding: 12px; border-radius: 12px; border: 2.5px solid #F1F5F9; font-size: 13px; outline: none; width: 100%; }
+        .talent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 30px; padding: 50px 60px; }
+        .card { background: white; border-radius: 35px; padding: 35px; border: 1px solid #F1F5F9; cursor: pointer; position: relative; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1); border-color: var(--brand-red); }
+        .photo-xl { width: 90px; height: 90px; border-radius: 28px; overflow: hidden; border: 4px solid #F8FAFC; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); }
+        .photo-xl img { width: 100%; height: 100%; object-fit: cover; }
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(12px); }
+        .modal-dossier { background: white; width: 90%; max-width: 950px; border-radius: 40px; display: flex; overflow: hidden; height: auto; max-height: 85vh; box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5); }
+        .side-red { background: var(--brand-red); width: 35%; padding: 45px 35px; color: white; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .modal-photo { width: 160px; height: 160px; border-radius: 45px; border: 6px solid rgba(255, 255, 255, 0.2); margin-bottom: 25px; overflow: hidden; background: white; }
+        .modal-photo img { width: 100%; height: 100%; object-fit: contain; }
+        .main-info { width: 65%; padding: 50px; overflow-y: auto; background: #fff; }
+        .resumen-profesional { background: #FFF5F5; padding: 25px; border-radius: 20px; border-left: 6px solid var(--brand-red); margin-bottom: 30px; }
+        .resumen-profesional h4 { font-size: 13px; color: var(--brand-red); text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
+        .info-tag { background: #F8FAFC; padding: 20px; border-radius: 20px; border: 1px solid #E2E8F0; margin-bottom: 12px; }
+        .info-tag label { font-size: 10px; color: var(--brand-red); font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 6px; }
     </style>
 </head>
-
 <body>
-
     <header>
         <div class="brand-content">
             <h1>REDVOLUTION <span style="font-weight: 300; opacity: 0.8;">Talent Hub</span></h1>
@@ -264,9 +64,9 @@
     </div>
 
     <script>
-        // CACHE BUSTER: Agregamos timestamp para forzar carga de datos nuevos
-        const DATA_LINK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSob8PxuWD3lMNy28ysZRRrSKH8a05gbSg8oekta-2BAyTi5wFblU3Q-NhH9TYD2n19flNss7sU--U9/pub?output=csv&t=" + new Date().getTime();
-        const PROXY = "https://api.allorigins.win/raw?url=";
+        // ELIMINAMOS FETCH Y PROXIES. USAMOS CARGA DIRECTA POR SCRIPT.
+        const SS_ID = "1vSob8PxuWD3lMNy28ysZRRrSKH8a05gbSg8oekta-2BAyTi5wFblU3Q-NhH9TYD2n19flNss7sU--U9";
+        const G_DATA_URL = `https://docs.google.com/spreadsheets/d/e/${SS_ID}/pub?output=csv`;
 
         let DB = [];
         let filteredDB = [];
@@ -277,38 +77,33 @@
             return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800-h800` : url;
         }
 
-        async function boot() {
-            try {
-                const r = await fetch(PROXY + encodeURIComponent(DATA_LINK));
-                const csv = await r.text();
-                Papa.parse(csv, {
-                    header: false,
-                    skipEmptyLines: 'greedy', // Mejora la limpieza de filas vacías
-                    complete: function(res) {
-                        DB = res.data.slice(1).map(r => ({
-                            redv: r[2], foto: r[3], nombre: r[4], dni: r[5], email: r[6], tel: r[7],
-                            city: r[14], dist: r[13], polo: r[15], pant: r[16], zap: r[17],
-                            bio: r[18], grad: r[19], carr: r[20], exp_anos: r[22], ingles: r[21],
-                            centro: r[23], logros: r[24], doc1: r[34], doc2: r[35], doc3: r[36], doc4: r[37]
-                        })).filter(d => d.nombre && d.nombre.trim() !== "");
+        function boot() {
+            // PapaParse tiene un modo "Script" que evita bloqueos de navegador
+            Papa.parse(G_DATA_URL, {
+                download: true,
+                header: false,
+                skipEmptyLines: 'greedy',
+                complete: function(res) {
+                    DB = res.data.slice(1).map(r => ({
+                        redv: r[2], foto: r[3], nombre: r[4], dni: r[5], email: r[6], tel: r[7],
+                        city: r[14], dist: r[13], polo: r[15], pant: r[16], zap: r[17],
+                        bio: r[18], grad: r[19], carr: r[20], exp_anos: r[22], ingles: r[21],
+                        centro: r[23], logros: r[24], doc1: r[34], doc2: r[35], doc3: r[36], doc4: r[37]
+                    })).filter(d => d.nombre && d.nombre.trim() !== "");
 
-                        filteredDB = [...DB];
-                        populateFilters();
-                        renderGrid(filteredDB);
-                    }
-                });
-            } catch (e) {
-                console.error("Error crítico de sincronización:", e);
-            }
+                    filteredDB = [...DB];
+                    populateFilters();
+                    renderGrid(filteredDB);
+                }
+            });
         }
 
         function populateFilters() {
             const unique = (k) => [...new Set(DB.map(d => d[k]))].filter(Boolean).sort();
             const fill = (id, list) => {
                 const el = document.getElementById(id);
-                list.forEach(v => {
-                    if (v) el.innerHTML += `<option value="${v}">${v}</option>`;
-                });
+                el.innerHTML = '<option value="">Todos</option>';
+                list.forEach(v => { if (v) el.innerHTML += `<option value="${v}">${v}</option>`; });
             };
             fill("f-dni", unique("dni"));
             fill("f-city", unique("city"));
@@ -331,7 +126,7 @@
             const exp = document.getElementById("f-exp").value;
 
             filteredDB = DB.filter(x =>
-                (!q || x.nombre.toLowerCase().includes(q)) &&
+                (!q || (x.nombre && x.nombre.toLowerCase().includes(q))) &&
                 (!dniVal || x.dni === dniVal) &&
                 (!r || x.redv === r) && (!c || x.city === c) && (!d || x.dist === d) &&
                 (!g || x.grad === g) && (!s || x.carr === s) &&
@@ -342,7 +137,7 @@
 
         function renderGrid(data) {
             const grid = document.getElementById("main-grid");
-            grid.innerHTML = "";
+            grid.innerHTML = data.length === 0 ? "<p style='grid-column:1/-1; text-align:center;'>Sin resultados.</p>" : "";
             data.forEach((d, i) => {
                 grid.innerHTML += `<div class="card" onclick="showDossier(${i})"><div style="display:flex; align-items:center; gap:20px; margin-bottom:15px"><div class="photo-xl"><img src="${getThumb(d.foto) || 'https://ui-avatars.com/api/?name='+d.nombre}" onerror="this.src='https://ui-avatars.com/api/?name=${d.nombre}'"></div><div style="flex:1"><div style="font-size:19px; font-weight:800; color:var(--brand-dark)">${d.nombre}</div><div style="font-size:12px; color:#94A3B8; font-weight:600">ID: ${d.dni} · ${d.dist}</div></div></div><div style="font-size:13px; color:#64748B; font-style:italic; line-height:1.5">"${d.bio || 'Perfil estratégico verificado.'}"</div></div>`;
             });
@@ -351,29 +146,8 @@
         function showDossier(i) {
             const d = filteredDB[i];
             if (!d) return;
-
-            document.getElementById("m-side").innerHTML = `
-                <div class="modal-photo"><img src="${getThumb(d.foto) || 'https://ui-avatars.com/api/?name='+d.nombre}"></div>
-                <h2 style="font-size:26px; font-weight:800; margin-bottom:10px">${d.nombre}</h2>
-                <p style="opacity:0.8; font-size:14px; font-weight:600;">${d.grad} en ${d.carr}</p>
-                <div style="margin-top:35px; width:100%; background:rgba(0,0,0,0.1); padding:25px; border-radius:25px; text-align:left; font-size:13px;">
-                    <b>📞 WhatsApp:</b><br>${d.tel}<br><br><b>📧 Email:</b><br><small>${d.email}</small><br><br><b>📍 Ubicación:</b><br>${d.city}, ${d.dist}
-                </div>`;
-
-            document.getElementById("m-main").innerHTML = `
-                <div class="resumen-profesional"><h4>Resumen Profesional</h4><p>"${d.bio || 'Talento verificado listo para operación.'}"</p></div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px;">
-                    <div class="info-tag"><label>Centro de Labores</label><p>${d.centro || 'N/A'}</p></div>
-                    <div class="info-tag"><label>Nivel de Inglés</label><p>${d.ingles || 'Básico'}</p></div>
-                    <div class="info-tag" style="grid-column: span 2;"><label>Principales Logros</label><p>${d.logros || 'Historial validado.'}</p></div>
-                    <div class="info-tag"><label>Experiencia Rubro</label><p>${d.exp_anos || 'Menos de 1 año'}</p></div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
-                    ${d.doc1 ? `<a href="${d.doc1}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center"><label>Documentación</label><p>🪪 Ver DNI / CE</p></a>` : ''}
-                    ${d.doc2 ? `<a href="${d.doc2}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center"><label>Sanidad</label><p>🏥 Ver Carnet</p></a>` : ''}
-                    ${d.doc3 ? `<a href="${d.doc3}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center"><label>Certijoven</label><p>📜 Ver Certificado</p></a>` : ''}
-                    ${d.doc4 ? `<a href="${d.doc4}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center"><label>AFP / Salud</label><p>💼 Ver Registro</p></a>` : ''}
-                </div>`;
+            document.getElementById("m-side").innerHTML = `<div class="modal-photo"><img src="${getThumb(d.foto) || 'https://ui-avatars.com/api/?name='+d.nombre}"></div><h2 style="font-size:26px; font-weight:800; margin-bottom:10px">${d.nombre}</h2><p style="opacity:0.8; font-size:14px; font-weight:600;">${d.grad} en ${d.carr}</p><div style="margin-top:35px; width:100%; background:rgba(0,0,0,0.1); padding:25px; border-radius:25px; text-align:left; font-size:13px;"><b>📞 WhatsApp:</b><br>${d.tel || 'N/A'}<br><br><b>📧 Email:</b><br><small>${d.email || 'N/A'}</small><br><br><b>📍 Ubicación:</b><br>${d.city}, ${d.dist}</div>`;
+            document.getElementById("m-main").innerHTML = `<div class="resumen-profesional"><h4>Resumen Profesional</h4><p>"${d.bio || 'Talento verificado listo para operación.'}"</p></div><div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px;"><div class="info-tag"><label>Centro de Labores</label><p>${d.centro || 'N/A'}</p></div><div class="info-tag"><label>Nivel de Inglés</label><p>${d.ingles || 'Básico'}</p></div><div class="info-tag" style="grid-column: span 2;"><label>Principales Logros</label><p>${d.logros || 'Historial validado.'}</p></div><div class="info-tag"><label>Experiencia Rubro</label><p>${d.exp_anos || 'Menos de 1 año'}</p></div></div><div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">${d.doc1 ? `<a href="${d.doc1}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center"><label>Documentación</label><p>🪪 Ver DNI / CE</p></a>` : ''}${d.doc2 ? `<a href="${d.doc2}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center"><label>Sanidad</label><p>🏥 Ver Carnet</p></a>` : ''}${d.doc3 ? `<a href="${d.doc3}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center"><label>Certijoven</label><p>📜 Ver Certificado</p></a>` : ''}${d.doc4 ? `<a href="${d.doc4}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center"><label>AFP / Salud</label><p>💼 Ver Registro</p></a>` : ''}</div>`;
             document.getElementById("overlay").style.display = "flex";
         }
 
@@ -381,5 +155,4 @@
         boot();
     </script>
 </body>
-
 </html>
