@@ -1,39 +1,39 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Redvolution Talent Hub — Pipeline Pro 2026</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --brand-red: #E30613; --brand-dark: #0F172A; --text-main: #1A1A1A; }
+        :root { --brand-red: #E30613; --brand-dark: #0F172A; }
         * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; background-image: radial-gradient(var(--brand-red) 0.5px, transparent 0.5px); background-size: 30px 30px; background-attachment: fixed; }
-        header { background: linear-gradient(135deg, rgba(227, 6, 19, 0.8), rgba(0, 0, 0, 0.9)), url('BannerRedvolution.jpg'); background-size: cover; background-position: center; height: 180px; padding: 0 60px; display: flex; justify-content: flex-end; align-items: center; position: sticky; top: 0; z-index: 1000; color: white; box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3); }
+        header { background: linear-gradient(135deg, rgba(227,6,19,0.8), rgba(0,0,0,0.9)), url('BannerRedvolution.jpg'); background-size: cover; background-position: center; height: 180px; padding: 0 60px; display: flex; justify-content: flex-end; align-items: center; position: sticky; top: 0; z-index: 1000; color: white; box-shadow: 0 15px 45px rgba(0,0,0,0.3); }
         .brand-content { text-align: right; }
         .brand-content h1 { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; }
-        .filter-console { margin: 30px 60px 0; background: white; padding: 30px; border-radius: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; align-items: flex-end; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06); }
+        .filter-console { margin: 30px 60px 0; background: white; padding: 30px; border-radius: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; align-items: flex-end; box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
         .f-group { display: flex; flex-direction: column; gap: 8px; }
         .f-group label { font-size: 10px; font-weight: 800; color: #64748B; text-transform: uppercase; }
         .f-group select, .f-group input { padding: 12px; border-radius: 12px; border: 2.5px solid #F1F5F9; font-size: 13px; outline: none; width: 100%; font-family: inherit; }
         .f-group select:focus, .f-group input:focus { border-color: var(--brand-red); }
         .talent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 30px; padding: 50px 60px; }
         .card { background: white; border-radius: 35px; padding: 35px; border: 1px solid #F1F5F9; cursor: pointer; position: relative; }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1); border-color: var(--brand-red); }
-        .photo-xl { width: 90px; height: 90px; border-radius: 28px; overflow: hidden; border: 4px solid #F8FAFC; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); flex-shrink: 0; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); border-color: var(--brand-red); }
+        .photo-xl { width: 90px; height: 90px; border-radius: 28px; overflow: hidden; border: 4px solid #F8FAFC; box-shadow: 0 10px 25px rgba(0,0,0,0.05); flex-shrink: 0; }
         .photo-xl img { width: 100%; height: 100%; object-fit: cover; }
-        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(12px); }
-        .modal-dossier { background: white; width: 90%; max-width: 950px; border-radius: 40px; display: flex; overflow: hidden; max-height: 85vh; box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5); }
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.9); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(12px); }
+        .modal-dossier { background: white; width: 90%; max-width: 950px; border-radius: 40px; display: flex; overflow: hidden; max-height: 85vh; box-shadow: 0 50px 100px rgba(0,0,0,0.5); }
         .side-red { background: var(--brand-red); width: 35%; padding: 45px 35px; color: white; display: flex; flex-direction: column; align-items: center; text-align: center; overflow-y: auto; }
-        .modal-photo { width: 160px; height: 160px; border-radius: 45px; border: 6px solid rgba(255, 255, 255, 0.2); margin-bottom: 25px; overflow: hidden; background: white; flex-shrink: 0; }
+        .modal-photo { width: 160px; height: 160px; border-radius: 45px; border: 6px solid rgba(255,255,255,0.2); margin-bottom: 25px; overflow: hidden; background: white; flex-shrink: 0; }
         .modal-photo img { width: 100%; height: 100%; object-fit: contain; }
         .main-info { width: 65%; padding: 50px; overflow-y: auto; background: #fff; }
         .resumen-profesional { background: #FFF5F5; padding: 25px; border-radius: 20px; border-left: 6px solid var(--brand-red); margin-bottom: 30px; }
         .resumen-profesional h4 { font-size: 13px; color: var(--brand-red); text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
         .info-tag { background: #F8FAFC; padding: 20px; border-radius: 20px; border: 1px solid #E2E8F0; margin-bottom: 12px; }
         .info-tag label { font-size: 10px; color: var(--brand-red); font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 6px; }
-        .status-msg { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #64748B; font-size: 15px; line-height: 1.8; }
-        .status-msg .icon { font-size: 40px; display: block; margin-bottom: 16px; }
+        .status-msg { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #64748B; font-size: 15px; line-height: 1.8; }
+        .status-msg .icon { font-size: 36px; display: block; margin-bottom: 14px; }
         .btn-reset { padding: 12px 20px; background: var(--brand-dark); color: white; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; font-family: inherit; }
         .btn-reset:hover { background: var(--brand-red); }
     </style>
@@ -72,10 +72,10 @@
 </div>
 
 <script>
-    // ─── CONFIGURACIÓN ────────────────────────────────────────────────────────
-    const SS_ID = "1vSob8PxuWD3lMNy28ysZRRrSKH8a05gbSg8oekta-2BAyTi5wFblU3Q-NhH9TYD2n19flNss7sU--U9";
-    const GID   = "0"; // ID numérico de la pestaña. Si no es la primera hoja, cámbialo.
-    // ─────────────────────────────────────────────────────────────────────────
+    // ─── Fuente de datos: CSV publicado de Google Sheets via proxy CORS ───
+    const DATA_LINK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSob8PxuWD3lMNy28ysZRRrSKH8a05gbSg8oekta-2BAyTi5wFblU3Q-NhH9TYD2n19flNss7sU--U9/pub?output=csv";
+    const PROXY     = "https://api.allorigins.win/raw?url=";
+    // ─────────────────────────────────────────────────────────────────────
 
     let DB = [], filteredDB = [];
 
@@ -89,80 +89,53 @@
         return `https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=E30613&color=fff&size=200`;
     }
 
-    // Parseo CSV robusto: maneja comas dentro de comillas y saltos de línea
-    function parseCSV(text) {
-        const rows = [];
-        let row = [], cur = "", inQ = false;
-        for (let i = 0; i < text.length; i++) {
-            const ch = text[i], nx = text[i + 1];
-            if (ch === '"') {
-                if (inQ && nx === '"') { cur += '"'; i++; }
-                else inQ = !inQ;
-            } else if (ch === ',' && !inQ) {
-                row.push(cur); cur = "";
-            } else if ((ch === '\n' || (ch === '\r' && nx === '\n')) && !inQ) {
-                if (ch === '\r') i++;
-                row.push(cur); rows.push(row); row = []; cur = "";
-            } else {
-                cur += ch;
-            }
-        }
-        if (cur || row.length) { row.push(cur); rows.push(row); }
-        return rows;
-    }
+    async function boot() {
+        try {
+            const res = await fetch(PROXY + encodeURIComponent(DATA_LINK));
+            const csv = await res.text();
 
-    function boot() {
-        // Endpoint CSV: permite CORS desde cualquier origen (local, GitHub Pages, hosting)
-        const url = `https://docs.google.com/spreadsheets/d/${SS_ID}/export?format=csv&gid=${GID}`;
+            Papa.parse(csv, {
+                header: false,
+                skipEmptyLines: true,
+                complete: function(result) {
+                    DB = result.data.slice(1).map(r => ({
+                        redv:     r[2]  || "",
+                        foto:     r[3]  || "",
+                        nombre:   r[4]  || "",
+                        dni:      r[5]  || "",
+                        email:    r[6]  || "",
+                        tel:      r[7]  || "",
+                        dist:     r[13] || "",
+                        city:     r[14] || "",
+                        polo:     r[15] || "",
+                        pant:     r[16] || "",
+                        zap:      r[17] || "",
+                        bio:      r[18] || "",
+                        grad:     r[19] || "",
+                        carr:     r[20] || "",
+                        ingles:   r[21] || "",
+                        exp_anos: r[22] || "",
+                        centro:   r[23] || "",
+                        logros:   r[24] || "",
+                        doc1:     r[34] || "",
+                        doc2:     r[35] || "",
+                        doc3:     r[36] || "",
+                        doc4:     r[37] || ""
+                    })).filter(d => d.nombre.trim() !== "");
 
-        fetch(url)
-            .then(res => {
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                return res.text();
-            })
-            .then(csv => {
-                const rows = parseCSV(csv);
-                // Fila 0 = encabezados → saltamos con slice(1)
-                DB = rows.slice(1).map(r => ({
-                    redv:     r[2]  || "",
-                    foto:     r[3]  || "",
-                    nombre:   r[4]  || "",
-                    dni:      r[5]  || "",
-                    email:    r[6]  || "",
-                    tel:      r[7]  || "",
-                    dist:     r[13] || "",
-                    city:     r[14] || "",
-                    polo:     r[15] || "",
-                    pant:     r[16] || "",
-                    zap:      r[17] || "",
-                    bio:      r[18] || "",
-                    grad:     r[19] || "",
-                    carr:     r[20] || "",
-                    ingles:   r[21] || "",
-                    exp_anos: r[22] || "",
-                    centro:   r[23] || "",
-                    logros:   r[24] || "",
-                    doc1:     r[34] || "",
-                    doc2:     r[35] || "",
-                    doc3:     r[36] || "",
-                    doc4:     r[37] || ""
-                })).filter(d => d.nombre);
-
-                filteredDB = [...DB];
-                populateFilters();
-                renderGrid(filteredDB);
-            })
-            .catch(err => {
-                document.getElementById("main-grid").innerHTML = `
-                    <div class="status-msg">
-                        <span class="icon">⚠️</span>
-                        <strong style="color:#E30613;">Error al cargar datos: ${err.message}</strong><br><br>
-                        <small>
-                            Verifica que la hoja esté en <b>Compartir → Cualquier persona con el enlace puede ver</b>.<br>
-                            Si el GID no es 0, actualiza la constante GID en el script.
-                        </small>
-                    </div>`;
+                    filteredDB = [...DB];
+                    populateFilters();
+                    renderGrid(filteredDB);
+                }
             });
+        } catch(e) {
+            document.getElementById("main-grid").innerHTML = `
+                <div class="status-msg">
+                    <span class="icon">⚠️</span>
+                    <strong style="color:#E30613;">Error al cargar datos: ${e.message}</strong><br><br>
+                    <small>Verifica que la hoja esté publicada en <b>Archivo → Compartir → Publicar en la web → CSV</b>.</small>
+                </div>`;
+        }
     }
 
     function populateFilters() {
@@ -193,7 +166,7 @@
         const exp  = document.getElementById("f-exp").value;
 
         filteredDB = DB.filter(x =>
-            (!q    || x.nombre.toLowerCase().includes(q)) &&
+            (!q    || x.nombre.toLowerCase().includes(q) || x.dni.includes(q)) &&
             (!dni  || x.dni      === dni)  &&
             (!redv || x.redv     === redv) &&
             (!city || x.city     === city) &&
