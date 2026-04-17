@@ -9,35 +9,42 @@
         :root { --brand-red: #E30613; --brand-dark: #0F172A; }
         * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; background-image: radial-gradient(var(--brand-red) 0.5px, transparent 0.5px); background-size: 30px 30px; background-attachment: fixed; }
-        header { background: linear-gradient(135deg, rgba(227,6,19,0.8), rgba(0,0,0,0.9)), url('BannerRedvolution.jpg'); background-size: cover; background-position: center; height: 180px; padding: 0 60px; display: flex; justify-content: flex-end; align-items: center; position: sticky; top: 0; z-index: 1000; color: white; box-shadow: 0 15px 45px rgba(0,0,0,0.3); }
+        header { background: linear-gradient(135deg, rgba(227,6,19,0.8), rgba(0,0,0,0.9)), url('BannerRedvolution.jpg'); background-size: cover; background-position: center; height: 180px; padding: 0 60px; display: flex; justify-content: flex-end; align-items: center; position: sticky; top: 0; z-index: 1000; color: white; box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3); }
         .brand-content { text-align: right; }
         .brand-content h1 { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; }
-        .filter-console { margin: 30px 60px 0; background: white; padding: 30px; border-radius: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; align-items: flex-end; box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
+        .filter-console { margin: 30px 60px 0; background: white; padding: 30px; border-radius: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; align-items: flex-end; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06); }
         .f-group { display: flex; flex-direction: column; gap: 8px; }
         .f-group label { font-size: 10px; font-weight: 800; color: #64748B; text-transform: uppercase; }
         .f-group select, .f-group input { padding: 12px; border-radius: 12px; border: 2.5px solid #F1F5F9; font-size: 13px; outline: none; width: 100%; font-family: inherit; }
-        .f-group select:focus, .f-group input:focus { border-color: var(--brand-red); }
         .talent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 30px; padding: 50px 60px; }
         .card { background: white; border-radius: 35px; padding: 35px; border: 1px solid #F1F5F9; cursor: pointer; position: relative; }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); border-color: var(--brand-red); }
-        .photo-xl { width: 90px; height: 90px; border-radius: 28px; overflow: hidden; border: 4px solid #F8FAFC; box-shadow: 0 10px 25px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1); border-color: var(--brand-red); }
+        .photo-xl { width: 90px; height: 90px; border-radius: 28px; overflow: hidden; border: 4px solid #F8FAFC; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); flex-shrink: 0; }
         .photo-xl img { width: 100%; height: 100%; object-fit: cover; }
-        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.9); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(12px); }
-        .modal-dossier { background: white; width: 90%; max-width: 950px; border-radius: 40px; display: flex; overflow: hidden; max-height: 85vh; box-shadow: 0 50px 100px rgba(0,0,0,0.5); }
+        #overlay, #lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(12px); }
+        #overlay { background: rgba(15,23,42,0.9); }
+        #lightbox-overlay { z-index: 3000; background: rgba(0,0,0,0.85); cursor: zoom-out; }
+        .modal-dossier { background: white; width: 90%; max-width: 950px; border-radius: 40px; display: flex; overflow: hidden; max-height: 85vh; box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5); }
         .side-red { background: var(--brand-red); width: 35%; padding: 45px 35px; color: white; display: flex; flex-direction: column; align-items: center; text-align: center; overflow-y: auto; }
         .modal-photo { width: 160px; height: 160px; border-radius: 45px; border: 6px solid rgba(255,255,255,0.2); margin-bottom: 25px; overflow: hidden; background: white; flex-shrink: 0; }
-        .modal-photo img { width: 100%; height: 100%; object-fit: contain; }
+        .modal-photo img { width: 100%; height: 100%; object-fit: cover; }
         .main-info { width: 65%; padding: 50px; overflow-y: auto; background: #fff; }
         .resumen-profesional { background: #FFF5F5; padding: 25px; border-radius: 20px; border-left: 6px solid var(--brand-red); margin-bottom: 30px; }
         .resumen-profesional h4 { font-size: 13px; color: var(--brand-red); text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
         .info-tag { background: #F8FAFC; padding: 20px; border-radius: 20px; border: 1px solid #E2E8F0; margin-bottom: 12px; }
         .info-tag label { font-size: 10px; color: var(--brand-red); font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 6px; }
-        .status-msg { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #64748B; font-size: 15px; line-height: 1.8; }
-        .status-msg .icon { font-size: 36px; display: block; margin-bottom: 14px; }
-        .btn-reset { padding: 12px 20px; background: var(--brand-dark); color: white; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; font-family: inherit; }
-        .btn-reset:hover { background: var(--brand-red); }
-        .retry-btn { margin-top: 16px; padding: 12px 28px; background: var(--brand-red); color: white; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; font-size: 14px; font-family: inherit; }
-        .retry-btn:hover { opacity: 0.85; }
+        .status-msg { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #64748B; font-size: 15px; }
+        .carousel-container { position: relative; width: 100%; margin: 15px 0; background: #F1F5F9; border-radius: 20px; padding: 15px; border: 1px solid #E2E8F0; overflow: hidden; }
+        .carousel-track { display: flex; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .carousel-slide { min-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 5px; flex-shrink: 0; }
+        .carousel-img-wrapper { width: 100%; height: 180px; border-radius: 12px; overflow: hidden; background-color: #E2E8F0; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08); cursor: zoom-in; }
+        .carousel-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .carousel-nav { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+        .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: #CBD5E1; cursor: pointer; border: none; padding: 0; }
+        .nav-dot.active { background: var(--brand-red); width: 20px; border-radius: 8px; }
+        .carousel-title { font-size: 11px; font-weight: 800; color: var(--brand-red); text-transform: uppercase; margin-bottom: 3px; text-align: center; }
+        .carousel-desc { font-size: 13px; color: var(--brand-dark); font-weight: 600; text-align: center; }
+        .lightbox-img { max-width: 90%; max-height: 90%; border-radius: 15px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); object-fit: contain; }
     </style>
 </head>
 <body>
@@ -59,11 +66,11 @@
     <div class="f-group"><label>👔 Carrera / Esp.</label><select id="f-carr" onchange="applyFilters()"><option value="">Todas</option></select></div>
     <div class="f-group"><label>🗣️ Inglés</label><select id="f-eng" onchange="applyFilters()"><option value="">Todos los niveles</option></select></div>
     <div class="f-group"><label>⏳ Años Exp.</label><select id="f-exp" onchange="applyFilters()"><option value="">Todos</option></select></div>
-    <button class="btn-reset" onclick="location.reload()">Reset</button>
+    <button onclick="location.reload()" style="padding:12px 20px; background:var(--brand-dark); color:white; border-radius:12px; border:none; cursor:pointer; font-weight:700;">Reset</button>
 </div>
 
 <div class="talent-grid" id="main-grid">
-    <div class="status-msg"><span class="icon">⏳</span>Sincronizando con Redvolution Hub...</div>
+    <div class="status-msg">Sincronizando con Redvolution Hub...</div>
 </div>
 
 <div id="overlay">
@@ -73,54 +80,47 @@
     </div>
 </div>
 
+<div id="lightbox-overlay" onclick="this.style.display='none'">
+    <img src="" class="lightbox-img" id="lightbox-img">
+</div>
+
 <script>
-    // ─── Fuente de datos ──────────────────────────────────────────────────────
     const DATA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSob8PxuWD3lMNy28ysZRRrSKH8a05gbSg8oekta-2BAyTi5wFblU3Q-NhH9TYD2n19flNss7sU--U9/pub?output=csv";
 
-    // Lista de proxies en orden de prioridad — si uno falla, intenta el siguiente
     const PROXIES = [
         url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-        url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-        url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-        url => `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`
+        url => `https://corsproxy.io/?${encodeURIComponent(url)}`
     ];
-    // ─────────────────────────────────────────────────────────────────────────
 
     let DB = [], filteredDB = [];
 
-    function getThumb(url) {
+    // FUNCIÓN CORREGIDA: Volvemos a la miniatura estable de Drive
+    function getThumb(url, large = false) {
         if (!url) return "";
         const m = url.match(/[?&]id=([^&]+)/) || url.match(/\/file\/d\/([^/]+)/);
-        return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800-h800` : url;
+        if (m) {
+            const size = large ? "w1600" : "w800";
+            return `https://drive.google.com/thumbnail?id=${m[1]}&sz=${size}`;
+        }
+        return url;
     }
 
     function avatarUrl(nombre) {
         return `https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=E30613&color=fff&size=200`;
     }
 
-    // Intenta cada proxy en secuencia hasta que uno responde con CSV válido
     async function fetchWithFallback() {
-        let lastError = null;
-        for (let i = 0; i < PROXIES.length; i++) {
+        for (let proxy of PROXIES) {
             try {
-                const proxyUrl = PROXIES[i](DATA_URL);
-                const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const res = await fetch(proxy(DATA_URL));
                 const text = await res.text();
-                // Validar que la respuesta sea CSV real (no HTML de error)
-                if (text.trim().startsWith("<")) throw new Error("Respuesta no es CSV");
-                console.log(`✅ Proxy ${i + 1} funcionó`);
-                return text;
-            } catch (e) {
-                console.warn(`⚠️ Proxy ${i + 1} falló: ${e.message}`);
-                lastError = e;
-            }
+                if (text.includes("nombre") || text.includes("DNI")) return text;
+            } catch (e) {}
         }
-        throw new Error("Todos los proxies fallaron. Intenta de nuevo en unos minutos.");
+        throw new Error();
     }
 
     async function boot() {
-        setStatus("⏳", "Sincronizando con Redvolution Hub...");
         try {
             const csv = await fetchWithFallback();
             Papa.parse(csv, {
@@ -128,165 +128,129 @@
                 skipEmptyLines: true,
                 complete: function(result) {
                     DB = result.data.slice(1).map(r => ({
-                        redv:     r[2]  || "",
-                        foto:     r[3]  || "",
-                        nombre:   r[4]  || "",
-                        dni:      r[5]  || "",
-                        email:    r[6]  || "",
-                        tel:      r[7]  || "",
-                        dist:     r[13] || "",
-                        city:     r[14] || "",
-                        polo:     r[15] || "",
-                        pant:     r[16] || "",
-                        zap:      r[17] || "",
-                        bio:      r[18] || "",
-                        grad:     r[19] || "",
-                        carr:     r[20] || "",
-                        ingles:   r[21] || "",
-                        exp_anos: r[22] || "",
-                        centro:   r[23] || "",
-                        logros:   r[24] || "",
-                        doc1:     r[34] || "",
-                        doc2:     r[35] || "",
-                        doc3:     r[36] || "",
-                        doc4:     r[37] || ""
+                        redv: r[2]||"", foto: r[3]||"", nombre: r[4]||"", dni: r[5]||"", email: r[6]||"", tel: r[7]||"",
+                        dist: r[13]||"", city: r[14]||"", polo: r[15]||"", pant: r[16]||"", zap: r[17]||"", bio: r[18]||"",
+                        grad: r[19]||"", carr: r[20]||"", ingles: r[21]||"", exp_anos: r[22]||"",
+                        exp1_nom: r[23], exp1_log: r[24], exp1_img: r[25],
+                        exp2_nom: r[26], exp2_log: r[28], exp2_img: r[29],
+                        exp3_nom: r[30], exp3_log: r[32], exp3_img: r[33],
+                        doc1: r[34]||"", doc2: r[35]||"", doc3: r[36]||"", doc4: r[37]||""
                     })).filter(d => d.nombre.trim() !== "");
-
-                    if (!DB.length) {
-                        setStatus("🔍", "La hoja no tiene datos o no está publicada correctamente.");
-                        return;
-                    }
-
                     filteredDB = [...DB];
                     populateFilters();
                     renderGrid(filteredDB);
                 }
             });
-        } catch(e) {
-            document.getElementById("main-grid").innerHTML = `
-                <div class="status-msg">
-                    <span class="icon">⚠️</span>
-                    <strong style="color:#E30613;">${e.message}</strong><br><br>
-                    <small>La hoja debe estar publicada en <b>Archivo → Compartir → Publicar en la web → CSV</b>.</small><br>
-                    <button class="retry-btn" onclick="boot()">🔄 Reintentar</button>
-                </div>`;
-        }
-    }
-
-    function setStatus(icon, msg) {
-        document.getElementById("main-grid").innerHTML =
-            `<div class="status-msg"><span class="icon">${icon}</span>${msg}</div>`;
+        } catch(e) { document.getElementById("main-grid").innerHTML = "Error de carga."; }
     }
 
     function populateFilters() {
         const unique = k => [...new Set(DB.map(d => d[k]))].filter(Boolean).sort();
         const fill = (id, list) => {
             const el = document.getElementById(id);
-            const first = el.options[0].outerHTML;
-            el.innerHTML = first + list.map(v => `<option value="${v}">${v}</option>`).join("");
+            el.innerHTML = '<option value="">Todos</option>' + list.map(v => `<option value="${v}">${v}</option>`).join("");
         };
-        fill("f-dni",  unique("dni"));
-        fill("f-city", unique("city"));
-        fill("f-dist", unique("dist"));
-        fill("f-grado",unique("grad"));
-        fill("f-carr", unique("carr"));
-        fill("f-eng",  unique("ingles"));
-        fill("f-exp",  unique("exp_anos"));
+        fill("f-dni", unique("dni")); fill("f-city", unique("city")); fill("f-dist", unique("dist"));
+        fill("f-grado", unique("grad")); fill("f-carr", unique("carr")); fill("f-eng", unique("ingles")); fill("f-exp", unique("exp_anos"));
     }
 
     function applyFilters() {
-        const q    = document.getElementById("q").value.toLowerCase();
-        const dni  = document.getElementById("f-dni").value;
+        const q = document.getElementById("q").value.toLowerCase();
+        const dni = document.getElementById("f-dni").value;
         const redv = document.getElementById("f-redv").value;
         const city = document.getElementById("f-city").value;
         const dist = document.getElementById("f-dist").value;
         const grad = document.getElementById("f-grado").value;
         const carr = document.getElementById("f-carr").value;
-        const eng  = document.getElementById("f-eng").value;
-        const exp  = document.getElementById("f-exp").value;
+        const eng = document.getElementById("f-eng").value;
+        const exp = document.getElementById("f-exp").value;
 
         filteredDB = DB.filter(x =>
-            (!q    || x.nombre.toLowerCase().includes(q) || x.dni.includes(q)) &&
-            (!dni  || x.dni      === dni)  &&
-            (!redv || x.redv     === redv) &&
-            (!city || x.city     === city) &&
-            (!dist || x.dist     === dist) &&
-            (!grad || x.grad     === grad) &&
-            (!carr || x.carr     === carr) &&
-            (!eng  || x.ingles   === eng)  &&
-            (!exp  || x.exp_anos === exp)
+            (!q || x.nombre.toLowerCase().includes(q) || x.dni.includes(q)) &&
+            (!dni || x.dni === dni) && (!redv || x.redv === redv) && (!city || x.city === city) &&
+            (!dist || x.dist === dist) && (!grad || x.grad === grad) && (!carr || x.carr === carr) &&
+            (!eng || x.ingles === eng) && (!exp || x.exp_anos === exp)
         );
         renderGrid(filteredDB);
     }
 
     function renderGrid(data) {
         const grid = document.getElementById("main-grid");
-        if (!data.length) {
-            grid.innerHTML = `<div class="status-msg"><span class="icon">🔍</span>No se encontraron candidatas con esos filtros.</div>`;
-            return;
-        }
         grid.innerHTML = data.map((d, i) => `
             <div class="card" onclick="showDossier(${i})">
                 <div style="display:flex; align-items:center; gap:20px; margin-bottom:15px;">
-                    <div class="photo-xl">
-                        <img src="${getThumb(d.foto) || avatarUrl(d.nombre)}"
-                             onerror="this.src='${avatarUrl(d.nombre)}'">
-                    </div>
+                    <div class="photo-xl"><img src="${getThumb(d.foto) || avatarUrl(d.nombre)}" onerror="this.src='${avatarUrl(d.nombre)}'"></div>
                     <div style="flex:1; min-width:0;">
-                        <div style="font-size:19px; font-weight:800; color:var(--brand-dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${d.nombre}</div>
-                        <div style="font-size:12px; color:#94A3B8; font-weight:600; margin-top:4px;">ID: ${d.dni} · ${d.dist}</div>
+                        <div style="font-size:19px; font-weight:800; color:var(--brand-dark); text-overflow:ellipsis; overflow:hidden;">${d.nombre}</div>
+                        <div style="font-size:12px; color:#94A3B8; font-weight:600;">ID: ${d.dni} · ${d.dist}</div>
                     </div>
                 </div>
-                <div style="font-size:13px; color:#64748B; font-style:italic; line-height:1.6;">
-                    "${d.bio || 'Perfil estratégico verificado.'}"
-                </div>
+                <div style="font-size:13px; color:#64748B; font-style:italic;">"${d.bio || 'Perfil verificado.'}"</div>
             </div>`).join("");
+    }
+
+    function moveCarousel(id, idx) {
+        const container = document.getElementById(id);
+        container.querySelector('.carousel-track').style.transform = `translateX(-${idx * 100}%)`;
+        container.querySelectorAll('.nav-dot').forEach((dot, i) => dot.classList.toggle('active', i === idx));
+    }
+
+    function openLightbox(url) {
+        const img = document.getElementById('lightbox-img');
+        img.src = url;
+        document.getElementById('lightbox-overlay').style.display = 'flex';
     }
 
     function showDossier(i) {
         const d = filteredDB[i];
         if (!d) return;
 
+        const exps = [
+            { n: d.exp1_nom, l: d.exp1_log, i: d.exp1_img },
+            { n: d.exp2_nom, l: d.exp2_log, i: d.exp2_img },
+            { n: d.exp3_nom, l: d.exp3_log, i: d.exp3_img }
+        ].filter(e => e.n && e.n.trim() !== "");
+
+        const carouselId = `carousel-${i}`;
+        const carouselHtml = exps.length ? `
+            <div class="carousel-container" id="${carouselId}">
+                <div class="carousel-track">
+                    ${exps.map(e => `
+                        <div class="carousel-slide">
+                            <div class="carousel-img-wrapper" onclick="openLightbox('${getThumb(e.i, true)}')">
+                                <img class="carousel-img" src="${getThumb(e.i)}" onerror="this.src='https://via.placeholder.com/400x200?text=Error'">
+                            </div>
+                            <div class="carousel-title">${e.n}</div>
+                            <div class="carousel-desc">${e.l || 'Experiencia validada.'}</div>
+                        </div>`).join("")}
+                </div>
+                ${exps.length > 1 ? `<div class="carousel-nav">${exps.map((_, idx) => `<button class="nav-dot ${idx===0?'active':''}" onclick="moveCarousel('${carouselId}', ${idx})"></button>`).join("")}</div>` : ''}
+            </div>` : 'Sin historial detallado.';
+
         document.getElementById("m-side").innerHTML = `
-            <div class="modal-photo">
-                <img src="${getThumb(d.foto) || avatarUrl(d.nombre)}"
-                     onerror="this.src='${avatarUrl(d.nombre)}'">
-            </div>
-            <h2 style="font-size:24px; font-weight:800; margin-bottom:10px; line-height:1.3;">${d.nombre}</h2>
-            <p style="opacity:0.85; font-size:13px; font-weight:600;">${d.grad}${d.carr ? ' en ' + d.carr : ''}</p>
-            <div style="margin-top:30px; width:100%; background:rgba(0,0,0,0.12); padding:22px; border-radius:20px; text-align:left; font-size:13px; line-height:1.9;">
-                <b>📞 WhatsApp:</b><br>${d.tel || 'N/A'}<br><br>
-                <b>📧 Email:</b><br><span style="word-break:break-all;">${d.email || 'N/A'}</span><br><br>
-                <b>📍 Ubicación:</b><br>${d.city}${d.dist ? ', ' + d.dist : ''}
+            <div class="modal-photo"><img src="${getThumb(d.foto) || avatarUrl(d.nombre)}" onerror="this.src='${avatarUrl(d.nombre)}'"></div>
+            <h2 style="font-size:24px; font-weight:800;">${d.nombre}</h2>
+            <p>${d.grad}</p>
+            <div style="margin-top:30px; text-align:left; font-size:13px; line-height:1.8; background:rgba(0,0,0,0.1); padding:20px; border-radius:20px;">
+                <b>📞 WhatsApp:</b> ${d.tel}<br><b>📧 Email:</b> ${d.email}<br><b>📍 Ubicación:</b> ${d.city}, ${d.dist}
             </div>`;
 
-        const docs = [
-            d.doc1 ? `<a href="${d.doc1}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center;"><label>Documentación</label><p>🪪 Ver DNI / CE</p></a>` : '',
-            d.doc2 ? `<a href="${d.doc2}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center;"><label>Sanidad</label><p>🏥 Ver Carnet</p></a>` : '',
-            d.doc3 ? `<a href="${d.doc3}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center;"><label>Certijoven</label><p>📜 Ver Certificado</p></a>` : '',
-            d.doc4 ? `<a href="${d.doc4}" target="_blank" class="info-tag" style="text-decoration:none; text-align:center;"><label>AFP / Salud</label><p>💼 Ver Registro</p></a>` : ''
-        ].filter(Boolean).join("");
-
         document.getElementById("m-main").innerHTML = `
-            <div class="resumen-profesional">
-                <h4>Resumen Profesional</h4>
-                <p>"${d.bio || 'Talento verificado listo para operación.'}"</p>
+            <div class="resumen-profesional"><h4>Resumen</h4><p>${d.bio}</p></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+                <div class="info-tag"><label>Inglés</label><p>${d.ingles}</p></div>
+                <div class="info-tag"><label>Experiencia</label><p>${d.exp_anos}</p></div>
             </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px;">
-                <div class="info-tag"><label>Centro de Labores</label><p>${d.centro || 'N/A'}</p></div>
-                <div class="info-tag"><label>Nivel de Inglés</label><p>${d.ingles || 'Básico'}</p></div>
-                <div class="info-tag" style="grid-column:span 2;"><label>Principales Logros</label><p>${d.logros || 'Historial validado.'}</p></div>
-                <div class="info-tag"><label>Experiencia Rubro</label><p>${d.exp_anos || 'Menos de 1 año'}</p></div>
-            </div>
-            ${docs ? `<div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">${docs}</div>` : ''}`;
+            <div class="info-tag"><label>Historial Laboral</label>${carouselHtml}</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                ${d.doc1 ? `<a href="${d.doc1}" target="_blank" class="info-tag" style="text-decoration:none;"><label>Documento</label><p>DNI / CE</p></a>` : ''}
+                ${d.doc2 ? `<a href="${d.doc2}" target="_blank" class="info-tag" style="text-decoration:none;"><label>Sanidad</label><p>Carnet</p></a>` : ''}
+            </div>`;
 
         document.getElementById("overlay").style.display = "flex";
     }
 
-    window.onclick = e => {
-        if (e.target.id === "overlay") document.getElementById("overlay").style.display = "none";
-    };
-
+    window.onclick = e => { if (e.target.id === "overlay") document.getElementById("overlay").style.display = "none"; };
     boot();
 </script>
 </body>
