@@ -94,15 +94,22 @@
 
     let DB = [], filteredDB = [];
 
-    // FUNCIÓN CORREGIDA: Volvemos a la miniatura estable de Drive
-    function getThumb(url, large = false) {
-        if (!url) return "";
-        const m = url.match(/[?&]id=([^&]+)/) || url.match(/\/file\/d\/([^/]+)/);
-        if (m) {
-            const size = large ? "w1600" : "w800";
-            return `https://drive.google.com/thumbnail?id=${m[1]}&sz=${size}`;
-        }
-        return url;
+    // FUNCIÓN DE PARSEO DE DRIVE: Ahora maneja múltiples URLs y limpia espacios
+    function parseDriveUrls(input) {
+        if (!input) return [];
+        // Separamos por comas y limpiamos espacios en blanco
+        const rawUrls = input.split(',').map(u => u.trim()).filter(u => u !== "");
+        
+        return rawUrls.map(url => {
+            const m = url.match(/[?&]id=([^&]+)/) || url.match(/\/file\/d\/([^/]+)/);
+            if (m) {
+                return {
+                    thumb: `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`,
+                    large: `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1600`
+                };
+            }
+            return { thumb: url, large: url };
+        });
     }
 
     function avatarUrl(nombre) {
@@ -135,7 +142,7 @@
                         exp2_nom: r[26], exp2_log: r[28], exp2_img: r[29],
                         exp3_nom: r[30], exp3_log: r[32], exp3_img: r[33],
                         doc1: r[34]||"", doc2: r[35]||"", doc3: r[36]||"", doc4: r[37]||""
-                    })).filter(d => d.nombre.trim() !== "");
+                    })).filter(d => d.nombre && d.nombre.trim() !== "");
                     filteredDB = [...DB];
                     populateFilters();
                     renderGrid(filteredDB);
@@ -176,17 +183,21 @@
 
     function renderGrid(data) {
         const grid = document.getElementById("main-grid");
-        grid.innerHTML = data.map((d, i) => `
+        grid.innerHTML = data.map((d, i) => {
+            const fotos = parseDriveUrls(d.foto);
+            const mainPhoto = fotos.length ? fotos[0].thumb : avatarUrl(d.nombre);
+            return `
             <div class="card" onclick="showDossier(${i})">
                 <div style="display:flex; align-items:center; gap:20px; margin-bottom:15px;">
-                    <div class="photo-xl"><img src="${getThumb(d.foto) || avatarUrl(d.nombre)}" onerror="this.src='${avatarUrl(d.nombre)}'"></div>
+                    <div class="photo-xl"><img src="${mainPhoto}" onerror="this.src='${avatarUrl(d.nombre)}'"></div>
                     <div style="flex:1; min-width:0;">
                         <div style="font-size:19px; font-weight:800; color:var(--brand-dark); text-overflow:ellipsis; overflow:hidden;">${d.nombre}</div>
                         <div style="font-size:12px; color:#94A3B8; font-weight:600;">ID: ${d.dni} · ${d.dist}</div>
                     </div>
                 </div>
                 <div style="font-size:13px; color:#64748B; font-style:italic;">"${d.bio || 'Perfil verificado.'}"</div>
-            </div>`).join("");
+            </div>`;
+        }).join("");
     }
 
     function moveCarousel(id, idx) {
@@ -205,30 +216,47 @@
         const d = filteredDB[i];
         if (!d) return;
 
-        const exps = [
+        // PROCESAMIENTO MULTI-FOTO PARA EL CARRUSEL
+        const rawExperiences = [
             { n: d.exp1_nom, l: d.exp1_log, i: d.exp1_img },
             { n: d.exp2_nom, l: d.exp2_log, i: d.exp2_img },
             { n: d.exp3_nom, l: d.exp3_log, i: d.exp3_img }
         ].filter(e => e.n && e.n.trim() !== "");
 
+        // Aplanamos todas las fotos de todas las experiencias en slides
+        let slides = [];
+        rawExperiences.forEach(ex => {
+            const fotosDeEstaExp = parseDriveUrls(ex.i);
+            if (fotosDeEstaExp.length === 0) {
+                slides.push({ n: ex.n, l: ex.l, thumb: 'https://via.placeholder.com/400x200?text=Sin+Foto', large: '' });
+            } else {
+                fotosDeEstaExp.forEach(f => {
+                    slides.push({ n: ex.n, l: ex.l, thumb: f.thumb, large: f.large });
+                });
+            }
+        });
+
         const carouselId = `carousel-${i}`;
-        const carouselHtml = exps.length ? `
+        const carouselHtml = slides.length ? `
             <div class="carousel-container" id="${carouselId}">
                 <div class="carousel-track">
-                    ${exps.map(e => `
+                    ${slides.map(s => `
                         <div class="carousel-slide">
-                            <div class="carousel-img-wrapper" onclick="openLightbox('${getThumb(e.i, true)}')">
-                                <img class="carousel-img" src="${getThumb(e.i)}" onerror="this.src='https://via.placeholder.com/400x200?text=Error'">
+                            <div class="carousel-img-wrapper" onclick="openLightbox('${s.large}')">
+                                <img class="carousel-img" src="${s.thumb}" onerror="this.src='https://via.placeholder.com/400x200?text=Error'">
                             </div>
-                            <div class="carousel-title">${e.n}</div>
-                            <div class="carousel-desc">${e.l || 'Experiencia validada.'}</div>
+                            <div class="carousel-title">${s.n}</div>
+                            <div class="carousel-desc">${s.l || 'Experiencia validada.'}</div>
                         </div>`).join("")}
                 </div>
-                ${exps.length > 1 ? `<div class="carousel-nav">${exps.map((_, idx) => `<button class="nav-dot ${idx===0?'active':''}" onclick="moveCarousel('${carouselId}', ${idx})"></button>`).join("")}</div>` : ''}
+                ${slides.length > 1 ? `<div class="carousel-nav">${slides.map((_, idx) => `<button class="nav-dot ${idx===0?'active':''}" onclick="moveCarousel('${carouselId}', ${idx})"></button>`).join("")}</div>` : ''}
             </div>` : 'Sin historial detallado.';
 
+        const perfilFotos = parseDriveUrls(d.foto);
+        const perfilImg = perfilFotos.length ? perfilFotos[0].thumb : avatarUrl(d.nombre);
+
         document.getElementById("m-side").innerHTML = `
-            <div class="modal-photo"><img src="${getThumb(d.foto) || avatarUrl(d.nombre)}" onerror="this.src='${avatarUrl(d.nombre)}'"></div>
+            <div class="modal-photo"><img src="${perfilImg}" onerror="this.src='${avatarUrl(d.nombre)}'"></div>
             <h2 style="font-size:24px; font-weight:800;">${d.nombre}</h2>
             <p>${d.grad}</p>
             <div style="margin-top:30px; text-align:left; font-size:13px; line-height:1.8; background:rgba(0,0,0,0.1); padding:20px; border-radius:20px;">
@@ -241,7 +269,7 @@
                 <div class="info-tag"><label>Inglés</label><p>${d.ingles}</p></div>
                 <div class="info-tag"><label>Experiencia</label><p>${d.exp_anos}</p></div>
             </div>
-            <div class="info-tag"><label>Historial Laboral</label>${carouselHtml}</div>
+            <div class="info-tag"><label>Historial Laboral (Multi-foto)</label>${carouselHtml}</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                 ${d.doc1 ? `<a href="${d.doc1}" target="_blank" class="info-tag" style="text-decoration:none;"><label>Documento</label><p>DNI / CE</p></a>` : ''}
                 ${d.doc2 ? `<a href="${d.doc2}" target="_blank" class="info-tag" style="text-decoration:none;"><label>Sanidad</label><p>Carnet</p></a>` : ''}
